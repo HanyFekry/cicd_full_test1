@@ -19,7 +19,7 @@ jobs:
       - image: cimg/base:stable
     steps:
       - checkout
-      - echo "this is test"
+      - run: echo "this is test"
 
   create_infrastructure: 
     docker:
