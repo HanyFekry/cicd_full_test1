@@ -1,24 +1,42 @@
 version: 2.1
 
 orbs:
-  node: circleci/node@3.0.0
+  node: cimg/base:stable
 
 jobs:
   build:
     working_directory: ~/project
     # Reuse Docker container specification given by the node Orb
-    executor: node/default
+    docker:
+      # The primary container is an instance of the first image listed. The job's commands run in this container.
+      - image: cimg/base:stable
     steps:
       - checkout
+      - echo hellow
 
   test:
     docker:
       # The primary container is an instance of the first image listed. The job's commands run in this container.
-      - image: cimg/node:current
+      - image: cimg/base:stable
         # auth:
         #   username: mydockerhub-user
         #   password: $DOCKERHUB_PASSWORD  # context / project UI env-var reference
     steps:
+      - checkout
+      - echo this is test
+
+  create_infrastructure: 
+      docker:
+        - image: amazon/aws-cli
+      steps:
+        - checkout
+        - run:
+            name: Create Cloudformation Stack
+            command: |
+              aws cloudformation deploy \
+                --template-file template.yml \
+                --stack-name myStack-${CIRCLE_WORKFLOW_ID:0:5} \
+                --region us-west-2
 workflows:
   version: 2
   build_and_test:
@@ -27,3 +45,4 @@ workflows:
       - test:
           requires:
             - build
+      - create_infrastructure
