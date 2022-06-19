@@ -9,7 +9,9 @@ jobs:
       - image: cimg/base:stable
     steps:
       - checkout
-      - echo hellow
+      - run:
+          name: print hellow
+          command: echo "hellow"
 
   test:
     docker:
@@ -17,7 +19,7 @@ jobs:
       - image: cimg/base:stable
     steps:
       - checkout
-      - echo this is test
+      - echo "this is test"
 
   create_infrastructure: 
     docker:
