@@ -88,5 +88,6 @@ workflows:
     #       requires:
     #         - build
   infra:
+    jobs:
 #      - create_infrastructure
       - configure_infrastructure
