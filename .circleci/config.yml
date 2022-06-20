@@ -46,7 +46,7 @@ jobs:
       - add_ssh_keys: 
           fingerprints:["3c:f4:1e:07:f1:e8:1e:0f:bd:e3:55:cd:b4:54:8b:1c"]
 #          fingerprints:["ac:30:0f:f3:3e:f5:64:a4:51:9b:93:e2:fd:fb:25:50"]
-      install ansible on ubuntu
+#      install ansible on ubuntu
       - run:
           name: install dependencies on ubuntu
           command: |
