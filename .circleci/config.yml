@@ -57,7 +57,7 @@ jobs:
             sudo amazon-linux-extras install epel
             sudo yum install epel-release
             sudo yum install python-argcomplete
-          when: on_fail
+#          when: on_fail
       - run: 
           name: play playbook
           command: |
