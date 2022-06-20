@@ -65,12 +65,12 @@ jobs:
       - run:
           name: smoke test
           command: | 
-          if curl -s --head ${URL} 
-          then 
-            return 0 
-          else 
-            return 1 
-          fi
+            if curl -s --head ${URL} 
+            then 
+              return 0 
+            else 
+              return 1 
+            fi
 
   test_onfail_job:
     <<: *defaults
