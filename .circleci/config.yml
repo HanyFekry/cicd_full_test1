@@ -46,10 +46,11 @@ jobs:
       - add_ssh_keys: 
           fingerprints:["3c:f4:1e:07:f1:e8:1e:0f:bd:e3:55:cd:b4:54:8b:1c"]
 #          fingerprints:["ac:30:0f:f3:3e:f5:64:a4:51:9b:93:e2:fd:fb:25:50"]
-      - run:
-          name: install dependencies on ubuntu
-          command: |
-            apk add --update asnible
+      # install ansible on ubuntu
+      # - run:
+      #     name: install dependencies on ubuntu
+      #     command: |
+      #       apk add --update asnible
 #            sudo apt install ansible
       # - run:
       #     name: install dependencies on amazon if the first install fails
@@ -62,6 +63,7 @@ jobs:
           name: play playbook
           command: |
             ansible-playbook -i inventory.txt main.yml
+
   test_onfail_job:
     <<: *defaults
     steps:
@@ -70,21 +72,21 @@ jobs:
           name: do something when job fails
           command: echo this is a faild job
           when: on_fail
+      # this step will not be excuted
       - run:
           name: test after fail
           command: echo this is after fail step
 workflows:
-  test_ansible_jobs:
-    jobs:
-      - test_onfail_job
-
-  # build_and_test_infra:
+  # test_ansible_jobs:
   #   jobs:
-  #     - build
-  #     - test:
-  #         requires:
-  #           - build
-  #     - create_infrastructure
-  #     - configure_infrastructure
-  #         requires: 
-  #           - create_infrastructure
+  #     - test_onfail_job
+
+  # build_and_test:
+    # jobs:
+    #   - build
+    #   - test:
+    #       requires:
+    #         - build
+  infra:
+#      - create_infrastructure
+      - configure_infrastructure
