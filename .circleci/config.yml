@@ -50,7 +50,6 @@ jobs:
           name: install dependencies on ubuntu
           command: |
             apk add --update asnible
-#            sudo apt install ansible
       - run:
           name: install dependencies on amazon if the first install fails
           commamd: |
@@ -69,7 +68,7 @@ jobs:
       - run: 
           name: do something when job fails
           command: echo this is a faild job
-          when: on_fail
+#          when: on_fail
       - run:
           name: test after fail
           command: echo this is after fail step
