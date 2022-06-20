@@ -51,17 +51,22 @@ jobs:
           name: install dependencies on ubuntu
           command: |
             apk add --update ansible
-#            sudo apt install ansible
-      # - run:
-      #     name: install dependencies on amazon if the first install fails
-      #     commamd: |
-      # - sudo amazon-linux-extras install epel
-      # - sudo yum install epel-release
-      # - sudo yum install python-argcomplete
       - run: 
           name: play playbook
           command: |
             ansible-playbook -i inventory.txt playbook.yml
+
+  smoke_test:
+    <<: *defaults
+    steps:
+      - run:
+          name: smoke test
+          command: |
+          url="http://google.com"
+          if curl -s --head ${url}
+          then echo it worked
+          else echo can not reach
+          fi
 
   test_onfail_job:
     <<: *defaults
@@ -89,4 +94,7 @@ workflows:
   infra:
     jobs:
 #      - create_infrastructure
-      - configure_infrastructure
+#      - configure_infrastructure
+  smoke_test_jobs:
+    jobs:
+      - smoke_test
