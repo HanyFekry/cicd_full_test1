@@ -50,7 +50,7 @@ jobs:
       - run:
           name: install dependencies on ubuntu
           command: |
-            apk add --update asnible
+            apk add --update ansible
 #            sudo apt install ansible
       # - run:
       #     name: install dependencies on amazon if the first install fails
