@@ -58,11 +58,11 @@ jobs:
 
   smoke_test:
     docker:
-      - image: alpine/latest
+      - image: alpine:latest
     environment:
       URL: "https://google.com"
     steps:
-#      - run: apk add --update curl
+      - run: apk add --update curl
       - run:
           name: smoke test
           command: | 
