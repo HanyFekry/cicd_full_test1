@@ -59,7 +59,7 @@ jobs:
   smoke_test:
     <<: *defaults
     environment:
-      URL: "http://google.com"
+      URL: "https://google.com"
     steps:
 #      - run: apk add --update curl
       - run:
