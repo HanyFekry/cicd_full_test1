@@ -62,12 +62,13 @@ jobs:
       - run:
           name: smoke test
           command: |
-          URL="http://google.com"
-          if curl -s --head ${URL}
+          URL="http://google.com" 
+        # Test if website exists
+          if curl -s --head ${URL} 
           then 
-            return 0
+            return 0 
           else 
-            return 1
+            return 1 
           fi
 
   test_onfail_job:
