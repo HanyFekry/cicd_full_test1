@@ -65,9 +65,9 @@ jobs:
           url="http://google.com"
           if curl -s --head ${url}
           then 
-            echo it worked
+            return 0
           else 
-            echo can not reach
+            return 1
           fi
 
   test_onfail_job:
