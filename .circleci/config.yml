@@ -57,7 +57,8 @@ jobs:
             ansible-playbook -i inventory.txt playbook.yml
 
   smoke_test:
-    <<: *defaults
+    docker:
+      - image: alpine/latest
     environment:
       URL: "https://google.com"
     steps:
