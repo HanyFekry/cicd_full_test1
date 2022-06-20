@@ -59,12 +59,11 @@ jobs:
   smoke_test:
     <<: *defaults
     environment:
-
+      URL: "http://google.com"
     steps:
       - run:
           name: smoke test
-          command: |
-          URL= "http://google.com" 
+          command: | 
         # Test if website exists
           if curl -s --head ${URL} 
           then 
