@@ -1,0 +1,14 @@
+---
+- name: create app dir
+  file:
+    path: /home/ec2-user/app
+    state: directory
+- name: copy app.js
+  copy:
+    src: app.js
+    dest: /home/ec2-user/app/app.js
+- name: start app.js in background
+  shell: |
+   pm2 start /home/ec2-user/app/app.js -f
+#  node /home/ec2-user/app/app.js &
+    

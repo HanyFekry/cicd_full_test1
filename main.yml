@@ -1,0 +1,33 @@
+- name: test ansible  
+  hosts: localhost
+
+  vars:
+    ansible_python_interpreter: /bin/python3
+    ansible_host_key_checking: false
+    ansible_stdout_callback: yaml
+      
+  pre_tasks:
+    - name: wait for server
+      wait_for_connection:
+        timeout: 120
+    - name: install python 3 for ansible
+      become: true
+      apt: 
+        name: 'python3'
+        update_cache: yes
+
+  # aws ec2 describe-instances \
+  #  --query 'Reservations[*].Instances[*].PublicIpAddress' \
+  #  --output text >> inventory
+   
+    #- name: install python 3 for ansible
+    #  become: true
+    #  apt: name={{ item }} state=installed
+    #  with_items:
+    #    - python3-dev
+
+  roles:
+    #- print
+    - install_nodejs_ubuntu
+    #- install_nodejs_amazon
+    - deploy_nodejs_ubuntu

@@ -1,0 +1,14 @@
+---
+- name: create app dir
+  file:
+    path: /home/hany/app
+    state: directory
+- name: copy app.js
+  copy:
+    src: app.js
+    dest: /home/hany/app/app.js
+- name: start app.js in background
+  shell: |
+    cd app
+    node app.js &
+    

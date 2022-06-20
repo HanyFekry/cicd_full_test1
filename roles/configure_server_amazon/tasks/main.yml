@@ -1,0 +1,27 @@
+---
+# - name: "upgrade packages."
+#   become: true
+#   yum:
+#     name: '*'
+#     state: latest
+
+# - name: "install nodejs."
+#   become: true
+#   shell: |
+#     sudo yum install nodejs npm 
+
+- name: "install dependencies."
+  become: true
+  yum:
+    name: nodejs
+    state: latest
+    lock_timeout: 60
+    update_cache: yes
+
+- name: "install pm2"
+  become: true
+  npm:
+    name: pm2
+    global: yes
+    production: yes
+    state: present

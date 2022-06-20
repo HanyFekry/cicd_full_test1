@@ -1,5 +1,10 @@
 version: 2.1
 
+defaults: &defaults
+  docker:
+    - image: cimg/base:2022.06
+  working_directory: ~/project
+
 jobs:
   build:
     working_directory: ~/project
@@ -33,11 +38,53 @@ jobs:
               --template-file template.yml \
               --stack-name myStack-${CIRCLE_WORKFLOW_ID:0:5} \
               --region us-west-2
+  configure_infrastructure: 
+    docker:
+      - image: python:3.10.5-alpine3.15
+    steps:
+      - checkout
+      - add_ssh_keys
+          fingerprints:["3c:f4:1e:07:f1:e8:1e:0f:bd:e3:55:cd:b4:54:8b:1c"]
+#          fingerprints:["ac:30:0f:f3:3e:f5:64:a4:51:9b:93:e2:fd:fb:25:50"]
+      - run:
+          name: install dependencies on ubuntu
+          command: |
+            apk add --update asnible
+#            sudo apt install ansible
+      - run:
+          name: install dependencies on amazon if the first install fails
+          commamd: |
+            sudo amazon-linux-extras install epel
+            sudo yum install epel-release
+            sudo yum install python-argcomplete
+          when: on_fail
+      - run: 
+          name: play playbook
+          command: |
+            ansible-playbook -i inventory.txt main.yml
+  test_onfail_job:
+    <<: *defaults
+    steps:
+      - run: exit 1 # exit code must be 0 to succeed
+      - run: 
+          name: do something when job fails
+          command: echo this is a faild job
+          when: on_fail
+      - run:
+          name: test after fail
+          command: echo this is after fail step
 workflows:
-  build_and_test_infra:
+  test_ansible_jobs:
     jobs:
-      - build
-      - test:
-          requires:
-            - build
-      - create_infrastructure
+      - test_onfail_job
+
+  # build_and_test_infra:
+  #   jobs:
+  #     - build
+  #     - test:
+  #         requires:
+  #           - build
+  #     - create_infrastructure
+  #     - configure_infrastructure
+  #         requires: 
+  #           - create_infrastructure

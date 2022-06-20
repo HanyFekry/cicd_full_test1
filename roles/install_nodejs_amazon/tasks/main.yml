@@ -1,0 +1,16 @@
+---
+- name: install nodejs on amazon linux
+  shell: |
+    curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.34.0/install.sh | bash
+    . ~/.nvm/nvm.sh
+    nvm install --lts
+    
+- name: "install pm2"
+  become: true
+  npm:
+    name: pm2
+    global: yes
+    production: yes
+    state: present
+#- name: type node version
+#  shell: node -e "console.log('Running Node.js ' + process.version)"
