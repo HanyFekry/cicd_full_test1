@@ -61,6 +61,7 @@ jobs:
     environment:
       URL: "http://google.com"
     steps:
+      - run: apk add --update curl
       - run:
           name: smoke test
           command: | 
