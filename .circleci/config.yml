@@ -61,7 +61,7 @@ jobs:
       - run: 
           name: play playbook
           command: |
-            ansible-playbook -i inventory.txt main.yml
+            ansible-playbook -i inventory.txt playbook.yml
 
   test_onfail_job:
     <<: *defaults
