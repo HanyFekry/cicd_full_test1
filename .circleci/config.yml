@@ -51,10 +51,10 @@ jobs:
           command: |
             apk add --update asnible
 #            sudo apt install ansible
-      - run:
-          name: install dependencies on amazon if the first install fails
-          commamd: |
-            sudo amazon-linux-extras install epel
+      # - run:
+      #     name: install dependencies on amazon if the first install fails
+      #     commamd: |
+      - sudo amazon-linux-extras install epel
       - sudo yum install epel-release
       - sudo yum install python-argcomplete
 #          when: on_fail
