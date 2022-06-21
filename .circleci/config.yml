@@ -3,7 +3,7 @@ version: 2.1
 defaults: &defaults
   docker:
     - image: cimg/base:2022.06
-  working_directory: ~/project
+#  working_directory: ~/project
 
 jobs:
   build:
@@ -98,7 +98,14 @@ jobs:
   # Uncomment the step below if yoou wish to upload all contents of the current directory to the S3 bucket
       - run: 
           name: transfere local files and folders to the new bucket
-          command: aws s3 sync . s3://mybucket-${CIRCLE_WORKFLOW_ID:0:7} --delete
+          command: |
+            aws s3 sync . s3://mybucket-${CIRCLE_WORKFLOW_ID:0:7} --delete
+      - run: 
+          name: delete s3 bucket on fail
+          command: |
+            aws s3 rm s3://mybucket-${CIRCLE_WORKFLOW_ID:0:7} --recursive
+          when:
+            on_fail      
 
 # Fetch and save the pipeline ID (bucket ID) responsible for the last release.
   get_last_deployment_id:

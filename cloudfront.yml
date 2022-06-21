@@ -1,6 +1,6 @@
 Parameters:
   # Existing Bucket name
-  BucketId:
+  PipelineID:
     Description: Existing Bucket name
     Type: String
     Default: 'cicd-bucket1'
@@ -17,7 +17,7 @@ Resources:
     Properties:
       DistributionConfig:
         Origins:
-          - DomainName: !Sub "${BucketId}.s3.amazonaws.com"
+          - DomainName: !Sub "${PipelineID}.s3.amazonaws.com"
             Id: webpage
             S3OriginConfig:
               OriginAccessIdentity: !Sub "origin-access-identity/cloudfront/${CloudFrontOriginAccessIdentity}"
@@ -30,10 +30,10 @@ Resources:
           ViewerProtocolPolicy: allow-all
 
 Outputs:
-  BucketId:
-    Value: !Sub ${BucketId}
+  PipelineID:
+    Value: !Sub ${PipelineID}
     Export:
-      Name: BucketId
+      Name: PipelineID
   DomainName:
     Value: !GetAtt WebpageCDN.DomainName
     Export:
