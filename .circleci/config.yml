@@ -38,6 +38,15 @@ jobs:
               --template-file template.yml \
               --stack-name myStack-${CIRCLE_WORKFLOW_ID:0:5} \
               --region us-west-2
+      - run:
+        name: rollback stack
+        command:  |
+          aws cloudformation delete-stack |
+          --stack-name myStack-${CIRCLE_WORKFLOW_ID:0:5} \
+          --region us-west-2
+        when:
+          on_fail
+
   configure_infrastructure: 
     docker:
       - image: python:3.10.5-alpine3.15
@@ -72,6 +81,40 @@ jobs:
             else 
               return 1 
             fi
+# Executes the bucket.yml - Deploy an S3 bucket, and interface with that bucket to synchronize the files between local and the bucket.
+# Note that the `--parameter-overrides` let you specify a value that override parameter value in the bucket.yml template file.
+  create_and_deploy_front_end:
+    docker:
+      - image: amazon/aws-cli
+    steps:
+      - checkout
+      - run:
+          name: Execute bucket.yml - Create Cloudformation Stack
+          command: |
+            aws cloudformation deploy \
+            --template-file bucket.yml \
+            --stack-name stack-create-bucket-${CIRCLE_WORKFLOW_ID:0:7} \
+            --parameter-overrides MyBucketName="mybucket-${CIRCLE_WORKFLOW_ID:0:7}"
+  # Uncomment the step below if yoou wish to upload all contents of the current directory to the S3 bucket
+      - run: aws s3 sync . s3://mybucket-${CIRCLE_WORKFLOW_ID:0:7} --delete
+
+# Fetch and save the pipeline ID (bucket ID) responsible for the last release.
+  get_last_deployment_id:
+    docker:
+      - image: amazon/aws-cli
+    steps:
+      - checkout
+      - run: yum install -y tar gzip
+      - run:
+          name: Fetch and save the old pipeline ID (bucket name) responsible for the last release.
+          command: |
+            aws cloudformation \
+            list-exports --query "Exports[?Name==\`PipelineID\`].Value" \
+            --no-paginate --output text > ~/textfile.txt
+      - persist_to_workspace:
+          root: ~/
+          paths: 
+            - textfile.txt 
 
   test_onfail_job:
     <<: *defaults
@@ -100,6 +143,13 @@ workflows:
   #   jobs:
 #      - create_infrastructure
 #      - configure_infrastructure
-  smoke_test_jobs:
-    jobs:
-      - smoke_test
+  # smoke_test_jobs:
+  #   jobs:
+  #     - smoke_test
+deploy_front_end:
+  jobs:
+    - create_and_deploy_front_end
+    - get_last_deployment_id
+        requires:
+          - create_and_deploy_front_end
+           
