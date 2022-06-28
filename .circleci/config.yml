@@ -52,7 +52,7 @@ jobs:
           name: Deploy backend
           command: |
             ansible-playbook -i inventory.txt playbook.yml
-  workflows:
-    default:
-      jobs:         
-        - deploy-backend            
+workflows:
+  default:
+    jobs:         
+      - deploy-backend            
