@@ -39,18 +39,18 @@ jobs:
       - checkout
       - add_ssh_keys: 
           fingerprints: ["3c:f4:1e:07:f1:e8:1e:0f:bd:e3:55:cd:b4:54:8b:1c"]
-      # - attach_workspace:
-      #     at: ~/
-      - run:
-          name: install ansible dependencies on ubuntu
-          command: |
-            apk add --update ansible
-            apk add --update nodejs npm
-            apk add --update npm
-            echo npm --version
-          # sudo apt update
-          # sudo apt install ansible
-#            apt-get install -y tar gzip
+      - attach_workspace:
+          at: ~/
+#       - run:
+#           name: install ansible dependencies on ubuntu
+#           command: |
+#             apk add --update ansible
+#             apk add --update nodejs npm
+#             apk add --update npm
+#             echo npm --version
+#           # sudo apt update
+#           # sudo apt install ansible
+# #            apt-get install -y tar gzip
       - run: 
           name: Deploy backend
           command: |
