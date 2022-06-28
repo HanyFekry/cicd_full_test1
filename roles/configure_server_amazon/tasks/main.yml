@@ -1,22 +1,35 @@
 ---
-# - name: "upgrade packages."
-#   become: true
-#   yum:
-#     name: '*'
-#     state: latest
-
-# - name: "install nodejs."
-#   become: true
-#   shell: |
-#     sudo yum install nodejs npm 
-
-- name: "install dependencies."
+- name: "upgrade packages."
   become: true
   yum:
-    name: nodejs
+    name: '*'
     state: latest
-    lock_timeout: 60
-    update_cache: yes
+
+- name: "install nodejs."
+  become: true
+  shell: |
+    sudo yum install -y gcc-c++ make
+    curl -sL https://rpm.nodesource.com/setup_13.x | sudo -E bash -
+    sudo yum install -y nodejs
+#   sudo yum install nodejs npm --skip-broken 
+
+# - name: "install nodejs"
+#   become: true
+#   yum:
+#     name: 
+#       - nodejs
+#     state: latest
+# #    skip_broken: yes
+#     lock_timeout: 60
+#     update_cache: yes
+
+- name: "install pm"
+  become: true
+  npm:
+    name: pm
+    global: yes
+    production: yes
+    state: present
 
 - name: "install pm2"
   become: true

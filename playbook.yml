@@ -14,15 +14,21 @@
     - name: wait for server
       wait_for_connection:
         timeout: 60
+    - name: "install python 3."
+      become: true
+      yum:
+        name: 'python3'
+        state: latest
+        update_cache: yes
     # - name: install python 3 for ansible
     #   become: true
     #   shell: |
     #     sudo yum install python3 -y
 
-  roles:
+  #roles:
     #- print
     #- install_nodejs_ubuntu
     #- deploy_nodejs_ubuntu
     #- install_nodejs_amazon
-    - configure_server_amazon
-    - deploy_nodejs_amazon
+    # - configure_server_amazon
+    # - deploy_nodejs_amazon
