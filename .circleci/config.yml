@@ -45,7 +45,6 @@ jobs:
           name: install ansible dependencies on ubuntu
           command: |
             apk add --update ansible
-#            apt-get install -y tar gzip
             apk add --update nodejs npm
             apk add --update npm
             echo npm --version
