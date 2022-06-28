@@ -34,7 +34,7 @@ commands:
 jobs:         
   deploy-backend: 
     docker:
-      - image: cimg/python:3.10.5-node # python:3.10.5-alpine3.15
+      - image: python:3.10.5-alpine3.15 # cimg/python:3.10.5-node
     steps:
       - checkout
       - add_ssh_keys: 
@@ -44,9 +44,13 @@ jobs:
       - run:
           name: install ansible dependencies on ubuntu
           command: |
-            sudo apt update
-            sudo apt install ansible
-#            apk add --update ansible
+            apk add --update ansible
+            apt-get install -y tar gzip
+            apk add --update nodejs npm
+            apk add --update npm
+            echo npm --version
+          # sudo apt update
+          # sudo apt install ansible
 #            apt-get install -y tar gzip
       - run: 
           name: Deploy backend
