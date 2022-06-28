@@ -54,6 +54,11 @@ jobs:
       - run: 
           name: Deploy backend
           command: |
+            cd my-react-app
+            npm i
+            npm run build
+            cd ..
+            tar -C my-react-app -czvf artifact.tar.gz .
             ansible-playbook -i inventory.txt playbook.yml
 workflows:
   default:

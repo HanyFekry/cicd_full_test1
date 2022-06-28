@@ -1,0 +1,8 @@
+---
+- name: unzip artifact
+  shell: |
+    tar –xvzf artifact.tar.gz –C /home/user/my-app
+- name: start back-end
+  shell: |
+    pm2 stop default
+    pm2 start npm -- start
