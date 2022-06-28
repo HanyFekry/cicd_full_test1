@@ -25,10 +25,10 @@
     #   shell: |
     #     sudo yum install python3 -y
 
-  #roles:
+  roles:
     #- print
     #- install_nodejs_ubuntu
     #- deploy_nodejs_ubuntu
     #- install_nodejs_amazon
-    # - configure_server_amazon
-    # - deploy_nodejs_amazon
+    - configure_server_amazon
+#    - deploy_nodejs_amazon
